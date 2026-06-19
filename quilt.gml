@@ -2,23 +2,23 @@ gml instance_destroy(obj_custom_object);
 instance_destroy(obj_custom_object_ext);
 with(instance_create(0,0,obj_custom_object))
 {
-  instance_create(0,0,obj_transfotip)
-  ox = lerp(-500, 500, 0.05);
-  oy = lerp(-500, 500, 0.05);
-  http_get_file("https://file.garden/aJ7oazu7_yp7XNBB/spr_optionsBG.png", "sprites/spr_optionsBG.png")
-  spr_optionsBG = sprite_add("sprites/spr_optionsBG.png", 1, 0, 0, 400, 400);
-  http_get_file("https://file.garden/aJ7oazu7_yp7XNBB/spr_modiconframe.png", "sprites/spr_modiconframe.png");
-  http_get_file("https://file.garden/aJ7oazu7_yp7XNBB/spr_modicon.png", "sprites/spr_modicon.png");
-  http_get_file("https://file.garden/aJ7oazu7_yp7XNBB/sfx_ui_back.ogg", "sounds/sfx_ui_back.png");
-  http_get_file("https://file.garden/aJ7oazu7_yp7XNBB/sfx_ui_select1.ogg", "sounds/sfx_ui_select1.png");
- http_get_file("https://file.garden/aJ7oazu7_yp7XNBB/sfx_ui_select2.ogg", "sounds/sfx_ui_select2.png");
- http_get_file("https://file.garden/aJ7oazu7_yp7XNBB/sfx_ui_select3.ogg", "sounds/sfx_ui_select3.png");
-  spr_modicon = sprite_add("sprites/spr_modicon.png", 1, 0, 0, 256, 256);
-  global.menuselect1 = audio_create_stream("sounds/sfx_ui_select1.ogg");
-  global.menuselect2 = audio_create_stream("sounds/sfx_ui_select2.ogg");
-  global.menuselect3 = audio_create_stream("sounds/sfx_ui_select3.ogg");
-  global.menuback = audio_create_stream("sounds/sfx_ui_back.ogg");
-  spr_modiconframe = sprite_add("sprites/spr_modiconframe.png", 1, 0, 0, 410, 410);
+    instance_create(0,0,obj_transfotip);
+    ox = 0;
+    oy = 0;
+    http_get_file("https://file.garden/aJ7oazu7_yp7XNBB/spr_optionsBG.png", "sprites/spr_optionsBG.png");
+    spr_optionsBG = sprite_add("sprites/spr_optionsBG.png", 1, 0, 0, 400, 400);
+    http_get_file("https://file.garden/aJ7oazu7_yp7XNBB/spr_modiconframe.png", "sprites/spr_modiconframe.png");
+    http_get_file("https://file.garden/aJ7oazu7_yp7XNBB/spr_modicon.png", "sprites/spr_modicon.png");
+    http_get_file("https://file.garden/aJ7oazu7_yp7XNBB/sfx_ui_back.ogg", "sounds/sfx_ui_back.png");
+    http_get_file("https://file.garden/aJ7oazu7_yp7XNBB/sfx_ui_select1.ogg", "sounds/sfx_ui_select1.png");
+    http_get_file("https://file.garden/aJ7oazu7_yp7XNBB/sfx_ui_select2.ogg", "sounds/sfx_ui_select2.png");
+    http_get_file("https://file.garden/aJ7oazu7_yp7XNBB/sfx_ui_select3.ogg", "sounds/sfx_ui_select3.png");
+    spr_modicon = sprite_add("sprites/spr_modicon.png", 1, 0, 0, 256, 256);
+    global.menuselect1 = audio_create_stream("sounds/sfx_ui_select1.ogg");
+    global.menuselect2 = audio_create_stream("sounds/sfx_ui_select2.ogg");
+    global.menuselect3 = audio_create_stream("sounds/sfx_ui_select3.ogg");
+    global.menuback = audio_create_stream("sounds/sfx_ui_back.ogg");
+    spr_modiconframe = sprite_add("sprites/spr_modiconframe.png", 1, 0, 0, 410, 410);
 	persistent = 1;
 	image_alpha = 0;
 	depth = -9999;
