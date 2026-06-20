@@ -2,23 +2,23 @@ gml instance_destroy(obj_custom_object);
 instance_destroy(obj_custom_object_ext);
 with(instance_create(0,0,obj_custom_object))
 {
-    instance_create(0,0,obj_transfotip);
-    ox = 0;
-    oy = 0;
-    http_get_file("https://file.garden/aJ7oazu7_yp7XNBB/spr_optionsBG.png", "sprites/spr_optionsBG.png");
-    spr_optionsBG = sprite_add("sprites/spr_optionsBG.png", 1, 0, 0, 400, 400);
-    http_get_file("https://file.garden/aJ7oazu7_yp7XNBB/spr_modiconframe.png", "sprites/spr_modiconframe.png");
-    http_get_file("https://file.garden/aJ7oazu7_yp7XNBB/spr_modicon.png", "sprites/spr_modicon.png");
-    http_get_file("https://file.garden/aJ7oazu7_yp7XNBB/sfx_ui_back.ogg", "sounds/sfx_ui_back.png");
-    http_get_file("https://file.garden/aJ7oazu7_yp7XNBB/sfx_ui_select1.ogg", "sounds/sfx_ui_select1.png");
-    http_get_file("https://file.garden/aJ7oazu7_yp7XNBB/sfx_ui_select2.ogg", "sounds/sfx_ui_select2.png");
-    http_get_file("https://file.garden/aJ7oazu7_yp7XNBB/sfx_ui_select3.ogg", "sounds/sfx_ui_select3.png");
-    spr_modicon = sprite_add("sprites/spr_modicon.png", 1, 0, 0, 256, 256);
-    global.menuselect1 = audio_create_stream("sounds/sfx_ui_select1.ogg");
-    global.menuselect2 = audio_create_stream("sounds/sfx_ui_select2.ogg");
-    global.menuselect3 = audio_create_stream("sounds/sfx_ui_select3.ogg");
-    global.menuback = audio_create_stream("sounds/sfx_ui_back.ogg");
-    spr_modiconframe = sprite_add("sprites/spr_modiconframe.png", 1, 0, 0, 410, 410);
+  instance_create(0,0,obj_transfotip);
+  ox = lerp(-500, 500, 0.05);
+  oy = lerp(-500, 500, 0.05);
+  http_get_file("https://file.garden/aJ7oazu7_yp7XNBB/spr_optionsBG.png", "sprites/spr_optionsBG.png");
+  spr_optionsBG = sprite_add("sprites/spr_optionsBG.png", 1, 0, 0, 400, 400);
+  http_get_file("https://file.garden/aJ7oazu7_yp7XNBB/spr_modiconframe.png", "sprites/spr_modiconframe.png");
+  http_get_file("https://file.garden/aJ7oazu7_yp7XNBB/spr_modicon.png", "sprites/spr_modicon.png");
+  http_get_file("https://file.garden/aJ7oazu7_yp7XNBB/sfx_ui_back.ogg", "sounds/sfx_ui_back.ogg");
+  http_get_file("https://file.garden/aJ7oazu7_yp7XNBB/sfx_ui_select1.ogg", "sounds/sfx_ui_select1.ogg");
+ http_get_file("https://file.garden/aJ7oazu7_yp7XNBB/sfx_ui_select2.ogg", "sounds/sfx_ui_select2.ogg");
+ http_get_file("https://file.garden/aJ7oazu7_yp7XNBB/sfx_ui_select3.ogg", "sounds/sfx_ui_select3.ogg");
+  spr_modicon = sprite_add("sprites/spr_modicon.png", 1, 0, 0, 256, 256);
+  global.menuselect1 = audio_create_stream("sounds/sfx_ui_select1.ogg");
+  global.menuselect2 = audio_create_stream("sounds/sfx_ui_select2.ogg");
+  global.menuselect3 = audio_create_stream("sounds/sfx_ui_select3.ogg");
+  global.menuback = audio_create_stream("sounds/sfx_ui_back.ogg");
+  spr_modiconframe = sprite_add("sprites/spr_modiconframe.png", 1, 0, 0, 410, 410);
 	persistent = 1;
 	image_alpha = 0;
 	depth = -9999;
@@ -104,6 +104,85 @@ draw_sprite_stretched(spr_modiconframe, 0, display_get_gui_width() - 220 - 200, 
 			draw_set_color(c_white);
 			draw_set_valign(fa_center);
 			draw_set_halign(fa_middle);
+			
+		} 
+	';
+	step_event = @'
+		scr_getinput();
+		if array_length(mods) == 0
+		{
+			if key_slap
+			{
+				instance_destroy();
+				scr_soundeffect(global.menuback); 
+			} 
+			exit;
+		}
+		function scr_load_file(filename)
+		{
+			var _gml = "";
+			if file_exists(filename)
+			{
+				var _file = buffer_load(filename);
+				if buffer_get_size(_file) > 0
+					_gml = buffer_read(_file, buffer_string);
+				buffer_delete(_file); 
+			}
+			return _gml;
+		}
+		function wrap(v, min, max)
+		{
+			return (v > max) ? min : (v < min) ? max : v;
+		}
+		obj_player.state = 18;
+        move = key_down2-key_up2;
+        selected += move;
+		scrollingtol = -selected * 32;
+		scrolling = lerp(scrolling,scrollingtol,0.1);
+        selected = wrap(selected, 0, array_length(mods) - 1);
+        if key_down2
+           scr_soundeffect(sfx_step);
+        if key_up2
+           scr_soundeffect(sfx_step);
+        if key_jump
+        {
+	        mods[selected].enabled = !mods[selected].enabled;
+			ini_open(mods[selected].file_path + "/mod.ini");
+			ini_write_real("Mod", "enabled", mods[selected].enabled);
+			ini_close();
+      scr_soundeffect(global.menuselect1, global.menuselect2, global.menuselect3);
+		}
+        if key_slap
+        {
+	        for (var i = 0;i < array_length(mods);i++)
+			{
+				var m = mods[i];
+				if m.enabled
+				{
+					if file_exists(m.file_path + "/init.gml")
+					{
+						var api = "";
+						api += string("globalvar MOD_PATH = \"" + m.file_path + "\";#globalvar MOD_GLOBAL = {};#");
+						var snippet = live_snippet_create(string_hash_to_newline(api + "#") + scr_load_file(m.file_path + "/init.gml"))
+						if live_snippet_call(snippet){} else get_string_async("Your mod fucked up!", "Runtime error for mod : " + quote + m.name + quote  + " in init.gml\n" + global.live_result);
+					}
+				}
+				else if m.was_enabled != m.enabled && !m.enabled && file_exists(m.file_path + "/cleanup.gml")
+				{
+					var api = "";
+					api += string("globalvar MOD_PATH = \"" + m.file_path + "\";#globalvar MOD_GLOBAL = {};#");
+					var snippet = live_snippet_create(string_hash_to_newline(api + "#") + scr_load_file(m.file_path + "/cleanup.gml"))
+					if live_snippet_call(snippet){} else get_string_async("Your mod fucked up!", "Runtime error for mod : " + quote + m.name + quote  + " in cleanup.gml\n" + global.live_result);
+				}
+			}
+			instance_destroy();
+			scr_soundeffect(global.menuback);
+			obj_player.state = 0;
+		}
+  	ox-- 
+  	oy--
+    ';docommand("reload_gml")
+}			draw_set_halign(fa_middle);
 			
 		} 
 	';
