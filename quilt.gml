@@ -26,6 +26,16 @@ with(instance_create(0,0,obj_custom_object))
 	path = "/storage/emulated/0/Documents/pizza tower android/mods/";
 	selected = 0;
 	scrolling = 0;
+	with obj_player
+	{
+		state = 18;
+		character = "P";
+		ispeppino = true;
+		scr_characterspr();
+		flash = true;
+		with instance_create(x, y, obj_genericpoofeffect)
+			image_speed = 4
+	}
 	quote = @'"';
 	drawgui_event = @'
 		function scr_load_file(filename)
@@ -109,6 +119,13 @@ draw_sprite_stretched(spr_modiconframe, 0, display_get_gui_width() - 220 - 200, 
 	';
 	step_event = @'
 		scr_getinput();
+		obj_camera.visible = false;
+		obj_tv.visible = false;
+		if room = rm_levelselect
+		{
+			instance_destroy(obj_mainmenu, 0);
+			instance_destroy(obj_levelselect, 0);
+		}
 		if array_length(mods) == 0
 		{
 			if key_slap
@@ -177,9 +194,22 @@ draw_sprite_stretched(spr_modiconframe, 0, display_get_gui_width() - 220 - 200, 
 			}
 			instance_destroy();
 			scr_soundeffect(global.menuback);
+			with obj_player
+			{
+				state = 106;
+				image_index = 0;
+				sprite_index = spr_tumbleend;
+				flash = true;
+				with instance_create(x, y, obj_genericpoofeffect)
+					image_speed = 4
+			}
 			obj_player.state = 0;
 		}
   	ox-- 
   	oy--
+    ';
+	destroy_event = @'
+		if room = rm_levelselect
+			instance_create(0, 0, obj_levelselect)
     ';docommand("reload_gml")
 }
