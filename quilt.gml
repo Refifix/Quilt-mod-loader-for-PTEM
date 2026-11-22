@@ -26,16 +26,6 @@ with(instance_create(0,0,obj_custom_object))
 	path = "/storage/emulated/0/Documents/pizza tower android/mods/";
 	selected = 0;
 	scrolling = 0;
-	with obj_player
-	{
-		state = 18;
-		character = "P";
-		ispeppino = true;
-		scr_characterspr();
-		flash = true;
-		with instance_create(x, y, obj_genericpoofeffect)
-			image_speed = 4
-	}
 	quote = @'"';
 	drawgui_event = @'
 		function scr_load_file(filename)
@@ -194,15 +184,6 @@ draw_sprite_stretched(spr_modiconframe, 0, display_get_gui_width() - 220 - 200, 
 			}
 			instance_destroy();
 			scr_soundeffect(global.menuback);
-			with obj_player
-			{
-				state = 106;
-				image_index = 0;
-				sprite_index = spr_tumbleend;
-				flash = true;
-				with instance_create(x, y, obj_genericpoofeffect)
-					image_speed = 4
-			}
 			obj_player.state = 0;
 		}
   	ox-- 
